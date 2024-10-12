@@ -18,26 +18,24 @@ namespace ServiceWeb.Controllers
         [HttpPost]// Post padrão
         public async Task<IActionResult> ProcessaFront([FromBody] FormFrontModel respostasForm) // passar no post os parâmetros
         {
-            respostasForm.Resposta1 = "teste";
-
-            var spotifyAuth = new SpotifyAuth();
+            string spotifyToken360;
+            SpotifyAuth spotifyAuth = new SpotifyAuth();
 
             try
             {
-                string clientId = "";
-                string clientSecret = "";
-
-                ResponseSpotifyAuthModel tokenResponse = await spotifyAuth.GetTokenAsync(clientId, clientSecret);
-                respostasForm.Resposta1 = tokenResponse.access_token;
-                respostasForm.Resposta2 = tokenResponse.token_type;
-                respostasForm.Resposta3 = $"Expires In: {tokenResponse.expires_in}";
+                //Pega token acesso spotify
+                ResponseSpotifyAuthModel tokenResponse = await spotifyAuth.GetTokenAsync();
+                spotifyToken360 = tokenResponse.access_token;
+ 
             }
             catch (Exception ex)
             {
+                //exceção geral, erros de API do chat e Sportify caem aqui
                 Console.WriteLine(ex.Message);
                 return NotFound();
             }
 
+            //Aqui vai retornar o link da playlist para o front
             return Ok(respostasForm);
         }
     }

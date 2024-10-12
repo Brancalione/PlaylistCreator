@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
-namespace ServiceWeb.Services // Altere para o namespace do seu projeto
+namespace ServiceWeb.Services 
 {
     public class SpotifyAuth
     {
@@ -16,8 +16,11 @@ namespace ServiceWeb.Services // Altere para o namespace do seu projeto
             _client = new HttpClient();
         }
 
-        public async Task<ResponseSpotifyAuthModel> GetTokenAsync(string clientId, string clientSecret)
+        public async Task<ResponseSpotifyAuthModel> GetTokenAsync()
         {
+            string clientId = "";
+            string clientSecret = "";
+
             var request = new HttpRequestMessage(HttpMethod.Post, "https://accounts.spotify.com/api/token");
 
             //Criar propriedade do cabeçalho x-www-form-urlencoded
