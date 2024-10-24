@@ -31,19 +31,27 @@ namespace ServiceWeb.Services
                 new KeyValuePair<string, string>("client_secret", clientSecret)
             });
 
-            request.Content = postData;
-            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
-
-            var response = await _client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var jsonResponse = await response.Content.ReadAsStringAsync();
-                return JsonConvert.DeserializeObject<ResponseSpotifyAuthModel>(jsonResponse);
+                request.Content = postData;
+                request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
+
+                var response = await _client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<ResponseSpotifyAuthModel>(jsonResponse);
+                }
+                else
+                {
+                    throw new Exception($"Error: {response.StatusCode}");
+                    return null;
+                }
             }
-            else
-            {
-                throw new Exception($"Error: {response.StatusCode}");
+            catch (Exception ex) {
+                Console.WriteLine($"Erro ao criar a playlist: {ex.Message}");
+                return null;
             }
         }
     }

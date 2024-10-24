@@ -16,15 +16,15 @@ namespace ServiceWeb.Services
             _client = new HttpClient();
         }
 
-        public async Task InserirMusicPlaylistAsync(string idMusica, string token, int l_i)
+        public async Task InserirMusicPlaylistAsync(string idMusica, string token, int l_i, string idPlaylist)
         {
             string idMusicaEscaped = Uri.EscapeDataString($"spotify:track:{idMusica}");// Remove : da URL e insere o formato correto %2
-            string url = $"https://api.spotify.com/v1/playlists/6eyhElSTRfDn2DwMTRILbL/tracks?position={l_i}&uris={idMusicaEscaped}";
+            string url = $"https://api.spotify.com/v1/playlists/{idPlaylist}/tracks";//?position={l_i}&uris={idMusicaEscaped}";
 
 
             BodySpotifyModel bodyRequest = new BodySpotifyModel();
             bodyRequest.uris = new string[1];
-            bodyRequest.uris[0] = $"spotify:track:{idMusica}";
+            bodyRequest.uris[0] = idMusica;
             bodyRequest.position = l_i;
 
             var jsonBody = JsonConvert.SerializeObject(bodyRequest);

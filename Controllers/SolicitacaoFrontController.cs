@@ -17,6 +17,7 @@ namespace ServiceWeb.Controllers
         {
             string[] nomeMusicas = new string[9];
             string spotifyToken360;
+            string idPlaylist;
             SpotifyAuth spotifyAuth = new SpotifyAuth();
             BuscaIdMusicas buscaIdMusic = new BuscaIdMusicas();
             string id_playlist = "7oMBCzoz1adHxopW60GeB4";
@@ -33,19 +34,21 @@ namespace ServiceWeb.Controllers
 
             try
             {
+                //Pega token
                 ResponseSpotifyAuthModel tokenResponse = await spotifyAuth.GetTokenAsync();
                 spotifyToken360 = tokenResponse.access_token;
+                
+                //Cria playlist
+                SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist();
+                var playlistResponse = await spotifyPlaylist.CreatePlaylistAsync(spotifyToken360);
+                idPlaylist = playlistResponse.id;
 
-                var cratePlaylist = new SpotifyPlaylist();
-                await cratePlaylist.CreatePlaylistAsync(spotifyToken360);
-
+                //Busca e insere musica na playlist
                 InsertMusicPlaylist insertMusicPlaylist = new InsertMusicPlaylist();
-
-                // Busca o ID das músicas e insere na playlist
                 for (int i = 0; i < nomeMusicas.Length; i++)
                 {
                     string uriMusic = await buscaIdMusic.GetIdMusicAsync(nomeMusicas[i], spotifyToken360);
-                    await insertMusicPlaylist.InserirMusicPlaylistAsync(uriMusic, spotifyToken360, i);
+                    await insertMusicPlaylist.InserirMusicPlaylistAsync(uriMusic, spotifyToken360, i , idPlaylist);
                 }
             }
             catch (Exception ex)
