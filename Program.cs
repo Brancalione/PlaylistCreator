@@ -1,9 +1,14 @@
+using ServiceWeb.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
+// Registrar o serviço como Singleton
+builder.Services.AddSingleton<ISharedDataService, SharedDataService>();
+
+// Swagger configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

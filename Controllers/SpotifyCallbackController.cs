@@ -9,11 +9,16 @@ namespace ServiceWeb.Controllers
     [ApiController]
     public class SpotifyCallbackController : ControllerBase
     {
-        // Este é o método que receberá o callback
+        //Cria a dependencia entre controllers
+        private readonly ISharedDataService _sharedDataService;
+        public SpotifyCallbackController(ISharedDataService sharedDataService)
+        {
+            _sharedDataService = sharedDataService;
+        }
+
         [HttpGet("callback")]
         public async Task<IActionResult> ReceiveCallback([FromQuery] Dictionary<string, string> queryParams)
         {
-            string spotifyToken360;
             string code_response = "";
             spotifycallback spotifyAuthUser = new spotifycallback();
 
@@ -27,7 +32,7 @@ namespace ServiceWeb.Controllers
 
                 //Faz token para pegar token de autenticação
                 ResponseSpotifyAuthUserModel tokenResponse = await spotifyAuthUser.GetTokenUserAsync(code_response);
-                spotifyToken360 = tokenResponse.access_token;
+                _sharedDataService.SpotifyToken = tokenResponse.access_token;
 
                 //HTML para fechar a aba do browser de autenticacao do spotify
                 string htmlContent = @"

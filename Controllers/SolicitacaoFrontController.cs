@@ -1,21 +1,31 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using ServiceWeb.Models;
 using ServiceWeb.Services;
 
-
 namespace ServiceWeb.Controllers
 {
-
     [Route("api/[controller]")]
     [ApiController]
     public class SolicitacaoFrontController : ControllerBase
     {
+        private readonly ISharedDataService _sharedDataService;
+        private string spotifyToken360;
+
+        public SolicitacaoFrontController(ISharedDataService sharedDataService)
+        {
+            _sharedDataService = sharedDataService;
+        }
+
+        // Método privado para obter o token sem retorno
+        private void GetSpotifyToken()
+        {
+            // Acessa o token armazenado no serviço
+            spotifyToken360 = _sharedDataService.SpotifyToken;
+        }
 
         [HttpPost]
         public async Task<IActionResult> ProcessaFront([FromBody] FormFrontModel respostasForm)
         {
-            string spotifyToken360;
             string idPlaylist;
             string[] nomeMusicas = new string[9];
             SpotifyAuth spotifyAuth = new SpotifyAuth();
@@ -33,32 +43,34 @@ namespace ServiceWeb.Controllers
             nomeMusicas[7] = "Stay - The Kid LAROI & Justin Bieber";
             nomeMusicas[8] = "Good 4 U - Olivia Rodrigo";
 
+            // Preenche a variável spotifyToken360 com o token
+            GetSpotifyToken();
+
+            if (string.IsNullOrEmpty(spotifyToken360))
+            {
+                return NotFound("Token do Spotify não encontrado.");
+            }
+
             try
             {
-                //Pega token
-                ResponseSpotifyAuthModel tokenResponse = await spotifyAuth.GetTokenAsync();
-                spotifyToken360 = tokenResponse.access_token;
-                
-                //Cria playlist
+                // Cria playlist
                 var playlistResponse = await spotifyPlaylist.CreatePlaylistAsync(spotifyToken360);
                 idPlaylist = playlistResponse.id;
 
-                //Busca e insere musica na playlist
-                
+                // Busca e insere música na playlist
                 for (int i = 0; i < nomeMusicas.Length; i++)
                 {
                     string uriMusic = await buscaIdMusic.GetIdMusicAsync(nomeMusicas[i], spotifyToken360);
-                    await insertMusicPlaylist.InserirMusicPlaylistAsync(uriMusic, spotifyToken360, i , idPlaylist);
+                    await insertMusicPlaylist.InserirMusicPlaylistAsync(uriMusic, spotifyToken360, i, idPlaylist);
                 }
             }
             catch (Exception ex)
             {
-                // Exceção geral, erros de API do chat e Spotify caem aqui
-                return NotFound();
+                return StatusCode(500, $"Erro ao criar playlist: {ex.Message}");
             }
 
-            // Aqui vai retornar o link da playlist para o front
-            return Ok();
+            // Retorna o link da playlist para o front
+            return Ok($"Playlist criada com ID: {idPlaylist}");
         }
     }
 }
