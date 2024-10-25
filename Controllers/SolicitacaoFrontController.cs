@@ -15,12 +15,13 @@ namespace ServiceWeb.Controllers
         [HttpPost]
         public async Task<IActionResult> ProcessaFront([FromBody] FormFrontModel respostasForm)
         {
-            string[] nomeMusicas = new string[9];
             string spotifyToken360;
             string idPlaylist;
+            string[] nomeMusicas = new string[9];
             SpotifyAuth spotifyAuth = new SpotifyAuth();
             BuscaIdMusicas buscaIdMusic = new BuscaIdMusicas();
-            string id_playlist = "7oMBCzoz1adHxopW60GeB4";
+            SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist();
+            InsertMusicPlaylist insertMusicPlaylist = new InsertMusicPlaylist();
 
             nomeMusicas[0] = "Blinding Lights - The Weeknd";
             nomeMusicas[1] = "Levitating - Dua Lipa";
@@ -39,12 +40,11 @@ namespace ServiceWeb.Controllers
                 spotifyToken360 = tokenResponse.access_token;
                 
                 //Cria playlist
-                SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist();
                 var playlistResponse = await spotifyPlaylist.CreatePlaylistAsync(spotifyToken360);
                 idPlaylist = playlistResponse.id;
 
                 //Busca e insere musica na playlist
-                InsertMusicPlaylist insertMusicPlaylist = new InsertMusicPlaylist();
+                
                 for (int i = 0; i < nomeMusicas.Length; i++)
                 {
                     string uriMusic = await buscaIdMusic.GetIdMusicAsync(nomeMusicas[i], spotifyToken360);
