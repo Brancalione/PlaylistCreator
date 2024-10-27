@@ -33,6 +33,9 @@ namespace ServiceWeb.Controllers
             SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist();
             spotifyUrlPlaylist urlPlaylist = new spotifyUrlPlaylist();
             InsertMusicPlaylist insertMusicPlaylist = new InsertMusicPlaylist();
+            RequestChatGptService requestChatGptService = new RequestChatGptService();
+
+            await requestChatGptService.RequestChatAsync("Tteste");
 
             nomeMusicas[0] = "Blinding Lights - The Weeknd";
             nomeMusicas[1] = "Levitating - Dua Lipa";

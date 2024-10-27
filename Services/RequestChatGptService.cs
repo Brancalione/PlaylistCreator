@@ -1,31 +1,38 @@
 ﻿using Newtonsoft.Json;
 using ServiceWeb.Models;
-using System;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 namespace ServiceWeb.Services
 {
-    public class InsertMusicPlaylist
+    public class RequestChatGptService
     {
         private readonly HttpClient _client;
 
-        public InsertMusicPlaylist()
+        public RequestChatGptService() 
         {
             _client = new HttpClient();
         }
 
-        public async Task InserirMusicPlaylistAsync(string idMusica, string token, int l_i, string idPlaylist)
+        public async Task RequestChatAsync(string texto)
         {
-            string idMusicaEscaped = Uri.EscapeDataString($"spotify:track:{idMusica}");// Remove : da URL e insere o formato correto %2
-            string url = $"https://api.spotify.com/v1/playlists/{idPlaylist}/tracks";
 
+            texto = "teste, oi";
+            string token = "";
 
-            BodySpotifyModel bodyRequest = new BodySpotifyModel();
-            bodyRequest.uris = new string[1];
-            bodyRequest.uris[0] = idMusica;
-            bodyRequest.position = l_i;
+            string url = "https://api.openai.com/v1/chat/completions";
+            BodyChatGptModel bodyRequest = new BodyChatGptModel
+            {
+                model = "gpt-4o-mini",
+                messages = new[]
+                {
+                    new ObjetoMessagens
+                    {
+                        role = "user",
+                        content = texto
+                    }
+                },
+                temperature = 0.8
+            };
 
             var jsonBody = JsonConvert.SerializeObject(bodyRequest);
             var request = new HttpRequestMessage(HttpMethod.Post, url);
@@ -33,7 +40,6 @@ namespace ServiceWeb.Services
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
             request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             request.Content = new StringContent(jsonBody, System.Text.Encoding.UTF8, "application/json");
-
 
             try
             {
@@ -51,9 +57,10 @@ namespace ServiceWeb.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Erro ao inserir a música na playlist: {ex.Message}");
-                throw; 
+                Console.WriteLine($"Erro buscar música no Chatgpt {ex.Message}");
+                throw;
             }
+
         }
     }
 }

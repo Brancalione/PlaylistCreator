@@ -24,7 +24,7 @@ namespace ServiceWeb.Services
             // Criação do corpo da requisição JSON
             var bodyRequest = new
             {
-                name = "New Playlist API2",
+                name = "Playlist API",
                 description = "New playlist description",
                 @public = true
             };
