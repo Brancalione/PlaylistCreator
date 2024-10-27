@@ -2,6 +2,8 @@
 using ServiceWeb.Models;
 using ServiceWeb.Services;
 using System.Text;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ServiceWeb.Controllers
 {
@@ -9,32 +11,34 @@ namespace ServiceWeb.Controllers
     [ApiController]
     public class SpotifyCallbackController : ControllerBase
     {
-        //Cria a dependencia entre controllers
+        // Criação de dependências entre controllers
         private readonly ISharedDataService _sharedDataService;
-        public SpotifyCallbackController(ISharedDataService sharedDataService)
+        private readonly SpotifyCallback _spotifyAuthUser; // Injeção de SpotifyCallback
+
+        public SpotifyCallbackController(ISharedDataService sharedDataService, SpotifyCallback spotifyAuthUser)
         {
             _sharedDataService = sharedDataService;
+            _spotifyAuthUser = spotifyAuthUser;
         }
 
         [HttpGet("callback")]
         public async Task<IActionResult> ReceiveCallback([FromQuery] Dictionary<string, string> queryParams)
         {
-            string code_response = "";
-            spotifycallback spotifyAuthUser = new spotifycallback();
+            string codeResponse = "";
 
             try
             {
-                //Pega token do callback spotify
+                // Pega o código de resposta do Spotify no callback
                 foreach (var param in queryParams)
                 {
-                    code_response = param.Value;
+                    codeResponse = param.Value;
                 }
 
-                //Faz token para pegar token de autenticação
-                ResponseSpotifyAuthUserModel tokenResponse = await spotifyAuthUser.GetTokenUserAsync(code_response);
+                // Usa o código para obter o token de autenticação
+                ResponseSpotifyAuthUserModel tokenResponse = await _spotifyAuthUser.GetTokenUserAsync(codeResponse);
                 _sharedDataService.SpotifyToken = tokenResponse.access_token;
 
-                //HTML para fechar a aba do browser de autenticacao do spotify
+                // HTML para fechar a aba do navegador de autenticação do Spotify
                 string htmlContent = @"
                     <html>
                     <head><title>Fechando Aba</title></head>
@@ -47,7 +51,6 @@ namespace ServiceWeb.Controllers
                     </html>";
 
                 return Content(htmlContent, "text/html", Encoding.UTF8);
-
             }
             catch (Exception ex)
             {

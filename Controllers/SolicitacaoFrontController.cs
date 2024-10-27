@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ServiceWeb.Models;
 using ServiceWeb.Services;
+using System.Text.Json;
 
 namespace ServiceWeb.Controllers
 {
@@ -28,9 +29,9 @@ namespace ServiceWeb.Controllers
         {
             string idPlaylist;
             string[] nomeMusicas = new string[9];
-            SpotifyAuth spotifyAuth = new SpotifyAuth();
             BuscaIdMusicas buscaIdMusic = new BuscaIdMusicas();
             SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist();
+            spotifyUrlPlaylist urlPlaylist = new spotifyUrlPlaylist();
             InsertMusicPlaylist insertMusicPlaylist = new InsertMusicPlaylist();
 
             nomeMusicas[0] = "Blinding Lights - The Weeknd";
@@ -48,7 +49,7 @@ namespace ServiceWeb.Controllers
 
             if (string.IsNullOrEmpty(spotifyToken360))
             {
-                return NotFound("Token do Spotify não encontrado.");
+                return NotFound("É necessário fazer login no Spotify antes de solicitar a criação da playlist.");
             }
 
             try
@@ -56,6 +57,7 @@ namespace ServiceWeb.Controllers
                 // Cria playlist
                 var playlistResponse = await spotifyPlaylist.CreatePlaylistAsync(spotifyToken360);
                 idPlaylist = playlistResponse.id;
+                urlPlaylist = playlistResponse.external_urls;
 
                 // Busca e insere música na playlist
                 for (int i = 0; i < nomeMusicas.Length; i++)
@@ -70,7 +72,8 @@ namespace ServiceWeb.Controllers
             }
 
             // Retorna o link da playlist para o front
-            return Ok($"Playlist criada com ID: {idPlaylist}");
+            return Ok($"Playlist criada com ID: {JsonSerializer.Serialize(urlPlaylist.spotify)}");
+
         }
     }
 }

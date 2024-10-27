@@ -1,26 +1,27 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using ServiceWeb.Models;
-using System;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
 
 namespace ServiceWeb.Services
 {
-    public class spotifycallback
+    public class SpotifyCallback
 
     {
         private readonly HttpClient _client;
+        private readonly IConfiguration _configuration;
 
-        public spotifycallback()
+        public SpotifyCallback(IConfiguration configuration)
         {
             _client = new HttpClient();
+            _configuration = configuration;
         }
 
         public async Task<ResponseSpotifyAuthUserModel> GetTokenUserAsync(string code)
         {
-            string clientId = "";
-            string clientSecret = "";
+
+            string clientId = _configuration["ApiKeys:clientId"];
+            string clientSecret = _configuration["ApiKeys:clientSecret"];
 
             var request = new HttpRequestMessage(HttpMethod.Post, "https://accounts.spotify.com/api/token");
 

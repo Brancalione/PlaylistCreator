@@ -8,6 +8,9 @@ builder.Services.AddControllers();
 // Registrar o serviço como Singleton
 builder.Services.AddSingleton<ISharedDataService, SharedDataService>();
 
+//Dependencias de keys locais
+builder.Services.AddTransient<SpotifyCallback>();
+
 // Swagger configuration
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
