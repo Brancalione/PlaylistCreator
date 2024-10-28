@@ -75,8 +75,7 @@ namespace ServiceWeb.Controllers
             }
 
             // Retorna o link da playlist para o front
-            return Ok($"Playlist criada com ID: {JsonSerializer.Serialize(urlPlaylist.spotify)}");
-
+            return Ok(new { url = urlPlaylist.spotify });
         }
     }
 }

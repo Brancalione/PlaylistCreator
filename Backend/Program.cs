@@ -15,7 +15,20 @@ builder.Services.AddTransient<SpotifyCallback>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173") // Porta do frontend
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
+
+app.UseCors("PermitirFrontend");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

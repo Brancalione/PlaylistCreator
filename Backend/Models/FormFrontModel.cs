@@ -5,14 +5,13 @@ namespace ServiceWeb.Models
     public class FormFrontModel
     {
         [Required]//Obrigatorio
-        public string Resposta1 { get; set; }
+        public int Resposta1 { get; set; }
 
         [Required]
-        [MinLength(5, ErrorMessage = "Errou -5")]
-        public string Resposta2 { get; set; }
+        public int Resposta2 { get; set; }
 
         [Required]
-        public string Resposta3 { get; set; }
+        public int Resposta3 { get; set; }
 
         [Required]
         public string Resposta4 { get; set; }
