@@ -75,7 +75,7 @@ namespace ServiceWeb.Controllers
             }
 
             // Retorna o link da playlist para o front
-            return Ok(new { url = urlPlaylist.spotify });
+            return Ok(new { url = idPlaylist });
         }
     }
 }

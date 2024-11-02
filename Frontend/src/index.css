@@ -1,18 +1,22 @@
-body{
-  background-color: black;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: rgb(255, 255, 255);
+  font-family: 'Poppins', 'Nunito', sans-serif;
 }
+
 .container {
-  background-color: rgb(36, 30, 30);
-  color: rgb(252, 251, 251);
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 600px;
+  background-color: rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+  display: flex;
+  flex-direction: column;
 }
 
 input[type="range"] {
   width: 100%;
   margin: 10px 0;
-  background-color: gray;
+  background-color: rgb(0, 0, 0);
 }
 
 button {
@@ -23,42 +27,18 @@ button {
   margin: 5px;
   border-radius: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 button:hover {
   background-color: #12a847;
 }
-button {
-  background-color: #1DB954;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-}
 
 button.selected {
-  background-color: #1ed760; /* Cor mais clara para o botão selecionado */
-  border: 2px solid rgb(255, 255, 255); /* Borda para destacar ainda mais */
+  background-color: #1ed760;
+  border: 2px solid rgb(255, 255, 255);
 }
 
-.loginSpotify a {
-  display: inline-block;
-  color: #1DB954;
-  font-weight: bold;
-  margin: 10px 0;
-  text-decoration: none;
-}
-
-.loginSpotify a:hover {
-  color: #1ed760;
-}
-
-.playlistButton, .loginSpotify {
-  text-align: center;
-  margin-top: 15px;
-}
 
 .playlistButton p {
   color: white;
@@ -72,6 +52,11 @@ a {
 a:hover {
   color: #1ed760;
 }
+
+iframe{
+  border-radius:12px ;   
+}
+
 input[type="range"] {
   -webkit-appearance: none;
   width: 100%;
@@ -83,28 +68,32 @@ input[type="range"] {
 
 input[type="range"]::-webkit-slider-runnable-track {
   height: 20px;
-  background: linear-gradient(to right, #eff0ef, #1ed760);  border-radius: 15px;
+  background: linear-gradient(to right, #7c7c7c, #1ed760);
+  border-radius: 15px;
   outline: none;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 28px; /* Tamanho da bolinha */
+  width: 28px;
   height: 28px;
-  background: url('https://santuarionacional.vteximg.com.br/arquivos/ids/159715-1000-1000/imagem-nossa-senhora-aparecida-pequena-21374.jpg?v=637038105363870000') no-repeat center; /* URL da imagem */
-  background-size: cover; /* Redimensiona a imagem para cobrir o thumb */
-  border: none; /* Remove a borda */
   border-radius: 50%;
   cursor: pointer;
   margin-top: -4px;
 }
+
 input[type="range"].slider1::-webkit-slider-thumb {
-  background: url('https://img.freepik.com/vetores-gratis/emoji-feliz_53876-25513.jpg?t=st=1730251601~exp=1730255201~hmac=c6e8a5bfc6e3072b4afb87734ae0aa85a1ca417ec84c87f84da210e6d86b711a&w=740') no-repeat center; /* URL da imagem para o slider 3 */
+  background: url('/src/img/feliz.jpg') no-repeat center;
+  background-size: cover;
 }
+
 input[type="range"].slider2::-webkit-slider-thumb {
-  background: url('https://img.freepik.com/vetores-gratis/emoji-feliz_53876-25513.jpg?t=st=1730251601~exp=1730255201~hmac=c6e8a5bfc6e3072b4afb87734ae0aa85a1ca417ec84c87f84da210e6d86b711a&w=740') no-repeat center; /* URL da imagem para o slider 3 */
+  background: url('img/entusiasmado1.jpg') no-repeat center;
+  background-size: cover;
 }
+
 input[type="range"].slider3::-webkit-slider-thumb {
-  background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZrKey5oWV6hb-6cyjEcOWJkEuZ-H-LqVZ3w&s') no-repeat center; /* URL da imagem para o slider 3 */
+  background: url('img/relaxado.jpg') no-repeat center;
+  background-size: cover;
 }
