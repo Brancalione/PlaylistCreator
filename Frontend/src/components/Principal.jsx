@@ -42,6 +42,7 @@ function Principal() {
       setLinkPlaylist( "https://open.spotify.com/playlist/" + response.data.url )
       setLinkPlaylistPrevia("https://open.spotify.com/embed/playlist/" + response.data.url + "?utm_source=generator&theme=0" )
       setExistPlaylist("Não gostei!!!");
+      setCarregando(false);
     } catch (error) {
       alert("Erro ao enviar dados");
       console.error("Erro:", error);
@@ -90,6 +91,7 @@ function Principal() {
           >Treinando</button>
         </div>
       </div>
+
       <div className="matchClash">
         <p  className='titulo' >Uma playlist que?</p>
         <button 
@@ -105,50 +107,62 @@ function Principal() {
       </div>
     
       <div className="loginSpotify">
-        {FezLogin ?  
+        {!FezLogin && 
           (
-            <p>AAAA</p>
-          ) : (
             <a href="https://accounts.spotify.com/authorize?client_id=4935730c846c489fbcfffdfbae4b19e4&response_type=code&redirect_uri=https://localhost:7133/api/SpotifyCallback/callback&scope=playlist-modify-public"
             target="_blank" ><button onClick={handleButtonClickLogin}>Login Spotify</button></a>
           )
         }
+      </div>
       
+      <div className="playlistButton">
+        {FezLogin && !Carregando && !RespostaBackend &&
+          (
+            <button onClick={handleSubmit}>{ExistPlaylist}</button>
+          ) 
+        }
       </div>
 
-      <div className="playlistButton">
-      {FezLogin &&
-        (
-          Carregando ? (
+      <div>
+        {Carregando &&
+          (
             <p>Carregando...</p>
-            // precisa arrumar o carregando que nao ta aparecendo
-          ) : (
-            <button onClick={handleSubmit}>{ExistPlaylist}</button>
-          )
-        ) 
-      }
-    </div>
+          ) 
+        }
+      </div>
 
-      {RespostaBackend && ( 
-        <div>
-          <a href={LinkPlaylist} target="_blank" rel="noopener noreferrer">
-          {/* <a href="https://open.spotify.com/embed/playlist/2VgPSTvYPImvxRdbRsJeBO?utm_source=generator"target="_blank" rel="noopener noreferrer"> */}
-            Abrir no Spotify
-          </a>
-            <div>
-            <iframe 
-              src={LinkPlaylistPrevia}
-              frameBorder="0" 
-              allowfullscreen="" 
-              allow="autoplay; clipboard-write;  fullscreen; picture-in-picture" 
-              loading="lazy">
-            </iframe>  
+      {RespostaBackend && 
+        ( 
+          <div >
+            <a href={LinkPlaylist} target="_blank" rel="noopener noreferrer">
+              Abrir no Spotify
+            </a>
+              <div>
+              <iframe 
+                src={LinkPlaylistPrevia}
+                // src="https://open.spotify.com/embed/playlist/2VgPSTvYPImvxRdbRsJeBO?utm_source=generator"
+                frameBorder="0" 
+                allowfullscreen="" 
+                allow="autoplay; clipboard-write;  fullscreen; picture-in-picture" 
+                loading="lazy"
+                height="180"
+                width="50%">  
+
+              </iframe> 
+              <div className="playlistButton1">
+                {FezLogin && !Carregando && RespostaBackend &&
+                  (
+                    <button onClick={handleSubmit}>{ExistPlaylist}</button>
+                   ) 
+                }
+              </div>
+            </div>
           </div>
-        </div>
-       )} 
-      
+        )
+      } 
     </div>
   );
 }
 
 export default Principal;
+{/* <iframe style="border-radius:12px" width="100%" height="352" frameBorder="0" allowfullscreen=""  loading="lazy"></iframe> */}
