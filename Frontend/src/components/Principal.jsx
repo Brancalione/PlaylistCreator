@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 function Principal() {
-  const [Resposta1, setResposta1] = useState(0);
-  const [Resposta2, setResposta2] = useState(0);
-  const [Resposta3, setResposta3] = useState(0);
-  const [Resposta4, setResposta4] = useState('');
-  const [Resposta5, setResposta5] = useState('');
+  const [Resposta1, setResposta1] = useState(3);
+  const [Resposta2, setResposta2] = useState(3);
+  const [Resposta3, setResposta3] = useState(3);
+  const [Resposta4, setResposta4] = useState(null);
+  const [Resposta5, setResposta5] = useState(null);
   const [selectedButtonFazendo, setSelectedButtonFazendo] = useState(null); // Botões do grupo "fazendo"
   const [selectedButtonMatchClash, setSelectedButtonMatchClash] = useState(null); // Botões do grupo "matchClash"
   const [Carregando, setCarregando] = useState(false);
@@ -41,7 +41,7 @@ function Principal() {
       setRespostaBackend(response.data.url); 
       setLinkPlaylist( "https://open.spotify.com/playlist/" + response.data.url )
       setLinkPlaylistPrevia("https://open.spotify.com/embed/playlist/" + response.data.url + "?utm_source=generator&theme=0" )
-      setExistPlaylist("Não gostei!!!");
+      setExistPlaylist("Não gostei!!! Tentar novamente");
       setCarregando(false);
     } catch (error) {
       alert("Erro ao enviar dados");
@@ -92,77 +92,86 @@ function Principal() {
         </div>
       </div>
 
-      <div className="matchClash">
-        <p  className='titulo' >Uma playlist que?</p>
-        <button 
-          className={selectedButtonMatchClash === 'Match' ? 'selected' : ''} 
-          onClick={() => handleButtonClickMatchClash('Match')}
-          >Match
-        </button>
-        <button 
-          className={selectedButtonMatchClash === 'Clash' ? 'selected' : ''} 
-          onClick={() => handleButtonClickMatchClash('Clash')}
-          >Clash
-        </button>
+      <div className='dupla2'>
+        <div className='optionsMatch'>
+          <div className="matchClash">
+            <p  className='titulo' >Uma playlist que?</p>
+            <button 
+              className={selectedButtonMatchClash === 'Match' ? 'selected' : ''} 
+              onClick={() => handleButtonClickMatchClash('Match')}
+              >Match
+            </button>
+            <button 
+              className={selectedButtonMatchClash === 'Clash' ? 'selected' : ''} 
+              onClick={() => handleButtonClickMatchClash('Clash')}
+              >Clash
+            </button>
+          </div>
+        
+          <div className="loginSpotify">
+            {!FezLogin && 
+              (
+                <a href="https://accounts.spotify.com/authorize?client_id=4935730c846c489fbcfffdfbae4b19e4&response_type=code&redirect_uri=https://localhost:7133/api/SpotifyCallback/callback&scope=playlist-modify-public"
+                target="_blank" ><button onClick={handleButtonClickLogin}>Login Spotify</button></a>
+              )
+            }
+          </div>
+          
+          <div className="playlistButton">
+            {FezLogin && !Carregando && !RespostaBackend && 
+            Resposta1 && Resposta2 && Resposta3 &&  
+            Resposta4 && Resposta5 &&
+              (
+                <button onClick={handleSubmit}>{ExistPlaylist}</button>
+              ) 
+            }
+          </div>
+
+          <div>
+            {Carregando &&
+              (
+                <p>Carregando...</p>
+              ) 
+            }
+          </div>
+        </div>
+
+        <div className='miniplaylist'>
+          {RespostaBackend && !Carregando &&
+            ( 
+              <div >
+                
+                  <a className='titulo' href={LinkPlaylist} target="_blank" rel="noopener noreferrer">
+                    Abrir no Spotify
+                  </a>
+               
+                  <div>
+                  <iframe 
+                    src={LinkPlaylistPrevia}
+                    frameBorder="0" 
+                    allowfullscreen="" 
+                    allow="autoplay; clipboard-write;  fullscreen; picture-in-picture" 
+                    loading="lazy"
+                    height="180"
+                    >  
+
+                  </iframe> 
+
+                </div>
+              </div>
+            )
+          } 
+        </div>
       </div>
-    
-      <div className="loginSpotify">
-        {!FezLogin && 
-          (
-            <a href="https://accounts.spotify.com/authorize?client_id=4935730c846c489fbcfffdfbae4b19e4&response_type=code&redirect_uri=https://localhost:7133/api/SpotifyCallback/callback&scope=playlist-modify-public"
-            target="_blank" ><button onClick={handleButtonClickLogin}>Login Spotify</button></a>
-          )
-        }
-      </div>
-      
-      <div className="playlistButton">
-        {FezLogin && !Carregando && !RespostaBackend &&
+      <div className="playlistButton1">
+        {FezLogin && !Carregando && RespostaBackend &&
           (
             <button onClick={handleSubmit}>{ExistPlaylist}</button>
-          ) 
+            ) 
         }
       </div>
-
-      <div>
-        {Carregando &&
-          (
-            <p>Carregando...</p>
-          ) 
-        }
-      </div>
-
-      {RespostaBackend && 
-        ( 
-          <div >
-            <a href={LinkPlaylist} target="_blank" rel="noopener noreferrer">
-              Abrir no Spotify
-            </a>
-              <div>
-              <iframe 
-                src={LinkPlaylistPrevia}
-                // src="https://open.spotify.com/embed/playlist/2VgPSTvYPImvxRdbRsJeBO?utm_source=generator"
-                frameBorder="0" 
-                allowfullscreen="" 
-                allow="autoplay; clipboard-write;  fullscreen; picture-in-picture" 
-                loading="lazy"
-                height="180"
-                width="50%">  
-
-              </iframe> 
-              <div className="playlistButton1">
-                {FezLogin && !Carregando && RespostaBackend &&
-                  (
-                    <button onClick={handleSubmit}>{ExistPlaylist}</button>
-                   ) 
-                }
-              </div>
-            </div>
-          </div>
-        )
-      } 
     </div>
   );
 }
 
 export default Principal;
-{/* <iframe style="border-radius:12px" width="100%" height="352" frameBorder="0" allowfullscreen=""  loading="lazy"></iframe> */}

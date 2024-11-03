@@ -2,26 +2,66 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: rgb(255, 255, 255);
-  font-family: 'Poppins', 'Nunito', sans-serif;
+  background-color: #282828;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .container {
-  background-color: rgb(0, 0, 0);
-  color: rgb(0, 0, 0);
+  background-color: #282828;
+  color:#FFFFFF;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0 auto;
+  text-align: center;
+  justify-content: flex-start; /* Alinha o conteúdo ao topo */
+  min-height: 100vh;
+  padding-top: 20px;
+}
+
+/* Ajuste os 4 conteiners da tela para fica lado a lado*/
+.dupla{
+  display: flex;
+  justify-content: space-between;
+  width: 80%; 
+  margin: 0 auto;
+  margin-bottom: 4%;
+}
+.sentindo, .fazendo {
+  width: 48%; 
+}
+.dupla2 {
+  display: flex;
+  justify-content: space-between; 
+  width: 80%; 
+  margin: 0 auto; 
+}
+.optionsMatch , .miniplaylist{
+  width: 48%;
+}
+/*  Fim do ajuste de conteiners*/
+
+.loginSpotify , .playlistButton{
+  margin: 6%; 
+}
+
+.titulo{
+  color: #1db954;
+  margin-bottom: 3%;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif ;
+  font-size: 18px;
 }
 
 input[type="range"] {
   width: 100%;
   margin: 10px 0;
-  background-color: rgb(0, 0, 0);
 }
 
 button {
-  background-color: #1DB954;
-  color: white;
+  background-color: #1db954;
+  color: #FFFFFF;
   border: none;
   padding: 10px 20px;
   margin: 5px;
@@ -30,27 +70,23 @@ button {
   transition: background-color 0.3s;
 }
 
+/*  Cores press ou passar por cima botoes*/
 button:hover {
-  background-color: #12a847;
+  background-color: #04ee56;
 }
-
 button.selected {
-  background-color: #1ed760;
-  border: 2px solid rgb(255, 255, 255);
+  background-color: #04ee56;
 }
+/*Fim*/
 
 
 .playlistButton p {
-  color: white;
+  color: rgb(176, 4, 4);
 }
 
 a {
-  color: #1DB954;
+  color: #1db954;
   text-decoration: none;
-}
-
-a:hover {
-  color: #1ed760;
 }
 
 iframe{
@@ -59,16 +95,14 @@ iframe{
 
 input[type="range"] {
   -webkit-appearance: none;
-  width: 100%;
   height: 8px;
-  background-color: #e0e0e0;
   border-radius: 5px;
   outline: none;
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
   height: 20px;
-  background: linear-gradient(to right, #7c7c7c, #1ed760);
+  background: linear-gradient(to right, #b3b3b3, #1db954);
   border-radius: 15px;
   outline: none;
 }
