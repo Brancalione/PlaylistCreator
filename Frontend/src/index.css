@@ -2,12 +2,12 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: #282828;
+  background-color: #000000;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .container {
-  background-color: #282828;
+  background-color: #000000;
   color:#FFFFFF;
   display: flex;
   flex-direction: column;
@@ -19,6 +19,9 @@
   justify-content: flex-start; /* Alinha o conteúdo ao topo */
   min-height: 100vh;
   padding-top: 20px;
+  
+  font-weight: bold;
+
 }
 
 /* Ajuste os 4 conteiners da tela para fica lado a lado*/
@@ -61,7 +64,7 @@ input[type="range"] {
 
 button {
   background-color: #1db954;
-  color: #FFFFFF;
+  color: #000000;
   border: none;
   padding: 10px 20px;
   margin: 5px;
@@ -130,4 +133,9 @@ input[type="range"].slider2::-webkit-slider-thumb {
 input[type="range"].slider3::-webkit-slider-thumb {
   background: url('img/relaxado.jpg') no-repeat center;
   background-size: cover;
+}
+
+img{
+  width: 10%;
+  height: 10%
 }
