@@ -5,17 +5,17 @@ function Principal() {
   const [Resposta1, setResposta1] = useState(3);
   const [Resposta2, setResposta2] = useState(3);
   const [Resposta3, setResposta3] = useState(3);
+  const [FezLogin, setFezLogin] = useState(false);
   const [Resposta4, setResposta4] = useState(null);
   const [Resposta5, setResposta5] = useState(null);
-  const [selectedButtonFazendo, setSelectedButtonFazendo] = useState(null); // Botões do grupo "fazendo"
-  const [selectedButtonMatchClash, setSelectedButtonMatchClash] = useState(null); // Botões do grupo "matchClash"
   const [Carregando, setCarregando] = useState(false);
-  const [FezLogin, setFezLogin] = useState(false);
+  const [LinkPlaylist, setLinkPlaylist] = useState(null);
   const [ExistPlaylist, setExistPlaylist] = useState(null);
   const [RespostaBackend, setRespostaBackend] = useState(null);
-  const [LinkPlaylist, setLinkPlaylist] = useState(null);
+  const [PlaylistCarregada, setPlaylistCarregada] = useState(false);
   const [LinkPlaylistPrevia, setLinkPlaylistPrevia] = useState(null);
-
+  const [selectedButtonFazendo, setSelectedButtonFazendo] = useState(null); 
+  const [selectedButtonMatchClash, setSelectedButtonMatchClash] = useState(null); 
 
   const handleButtonClickFazendo = (resposta) => {
     setResposta4(resposta);
@@ -32,8 +32,15 @@ function Principal() {
     setExistPlaylist("Criar Playlist")
   };
 
+  const handleSubmitNova = () =>{
+    setPlaylistCarregada(false);
+    setRespostaBackend(false)
+
+  }
+
   const handleSubmit = async () => {
     const requestData = { Resposta1, Resposta2, Resposta3, Resposta4, Resposta5 };
+    setPlaylistCarregada(false);
     setCarregando(true);
 
     try {
@@ -43,6 +50,7 @@ function Principal() {
       setLinkPlaylistPrevia("https://open.spotify.com/embed/playlist/" + response.data.url + "?utm_source=generator&theme=0" )
       setExistPlaylist("Não gostei!!! Tentar novamente");
       setCarregando(false);
+      setPlaylistCarregada(true)
     } catch (error) {
       alert("Erro ao enviar dados");
       console.error("Erro:", error);
@@ -52,7 +60,7 @@ function Principal() {
 
   return (
     <div className="container">
-
+      
       <div className='LogoEmacht'>
         <img className='logo' src="src\img\Spotify_Primary_Logo_RGB_Green.png" alt="logoSpotify" />
 
@@ -125,7 +133,7 @@ function Principal() {
       </div>
 
       <div className="loginSpotify">
-        {!FezLogin && 
+        {!FezLogin && !PlaylistCarregada &&
           (
             <a href="https://accounts.spotify.com/authorize?client_id=4935730c846c489fbcfffdfbae4b19e4&response_type=code&redirect_uri=https://localhost:7133/api/SpotifyCallback/callback&scope=playlist-modify-public"
             target="_blank" ><button onClick={handleButtonClickLogin}>Login Spotify</button></a>
@@ -137,14 +145,15 @@ function Principal() {
         {FezLogin && !Carregando && !RespostaBackend && 
         Resposta1 && Resposta2 && Resposta3 &&  
         Resposta4 && Resposta5 &&
+        !PlaylistCarregada &&
           (
-            <button onClick={handleSubmit}>Aqui</button>
+            <button onClick={handleSubmit}>Criar Playlist</button>
           ) 
         }
       </div>
 
       <div className='carregando'>
-        {Carregando &&
+        {Carregando && !PlaylistCarregada &&
           (
             <p>Carregando...</p>
           ) 
@@ -152,7 +161,7 @@ function Principal() {
       </div>
 
       <div className='miniplaylist'>
-        {RespostaBackend && !Carregando &&
+        {RespostaBackend && !Carregando && PlaylistCarregada &&
           ( 
             <div > 
               <a className='titulo' 
@@ -178,12 +187,18 @@ function Principal() {
         } 
       </div>
       <div className='naoGostei'>
-        {FezLogin && !Carregando && RespostaBackend &&
-          (
-            <button onClick={handleSubmit}>{ExistPlaylist}</button>
-            ) 
-        }
+        {FezLogin && !Carregando && RespostaBackend && PlaylistCarregada&&
+        (
+          <button onClick={handleSubmit}>{ExistPlaylist}</button>
+        )}
       </div>
+
+      {FezLogin && !Carregando && RespostaBackend && PlaylistCarregada &&
+      (
+        <div>
+          <button onClick={handleSubmitNova}>Mudar sentimentos</button>
+        </div>
+      )}
     </div>
   );
 }
