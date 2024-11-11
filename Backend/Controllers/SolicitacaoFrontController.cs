@@ -37,7 +37,7 @@ namespace ServiceWeb.Controllers
 
             //await requestChatGptService.RequestChatAsync("Tteste");
 
-            nomeMusicas[0] = "Blinding Lights - The Weeknd";
+            nomeMusicas[0] = "Me dê motivo - Tim Maia";
             nomeMusicas[1] = "Levitating - Dua Lipa";
             nomeMusicas[2] = "Shape of You - Ed Sheeran";
             nomeMusicas[3] = "Drivers License - Olivia Rodrigo";

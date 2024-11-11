@@ -52,7 +52,31 @@ function Principal() {
 
   return (
     <div className="container">
-      <div className='dupla'>
+
+      <div className='LogoEmacht'>
+        <img className='logo' src="src\img\Spotify_Primary_Logo_RGB_Green.png" alt="logoSpotify" />
+
+        <div className='descricaoApp'>
+          <p className='titulo2'> Expresse o que está sentindo e veja</p>
+          <p className='titulo3' >&nbsp; a playlist que criamos para você!</p>
+
+          <div className='MatchClash'>
+            <p className='titulo'>Quero uma playlist: </p>
+            <button 
+              className={selectedButtonMatchClash === 'Match' ? 'selected' : ''} 
+              onClick={() => handleButtonClickMatchClash('Match')}
+              >Match
+            </button>
+            <button 
+              className={selectedButtonMatchClash === 'Clash' ? 'selected' : ''} 
+              onClick={() => handleButtonClickMatchClash('Clash')}
+              >Clash
+            </button>
+          </div>  
+        </div>
+      </div> 
+
+      <div className='sentindoFazendo'>
         <div className="sentindo">
           <p className='titulo'>Como você está se sentindo?</p>
           <p>Feliz</p>
@@ -64,106 +88,96 @@ function Principal() {
         </div>
 
         <div className="fazendo">
-          <p className='titulo'>O que você está fazendo?</p>
-          <button 
-            className={selectedButtonFazendo === 'Relaxando' ? 'selected' : ''} 
-            onClick={() => handleButtonClickFazendo('Relaxando')}
-          >Relaxando</button>
-          <button 
-            className={selectedButtonFazendo === 'Estudando' ? 'selected' : ''} 
-            onClick={() => handleButtonClickFazendo('Estudando')}
-          >Estudando</button>
-          <button 
-            className={selectedButtonFazendo === 'Trabalhando' ? 'selected' : ''} 
-            onClick={() => handleButtonClickFazendo('Trabalhando')}
-          >Trabalhando</button>
-          <button 
-            className={selectedButtonFazendo === 'Dirigindo' ? 'selected' : ''} 
-            onClick={() => handleButtonClickFazendo('Dirigindo')}
-          >Dirigindo</button>
-          <button 
-            className={selectedButtonFazendo === 'Comendo' ? 'selected' : ''} 
-            onClick={() => handleButtonClickFazendo('Comendo')}
-          >Comendo</button>
-          <button 
-            className={selectedButtonFazendo === 'Treinando' ? 'selected' : ''} 
-            onClick={() => handleButtonClickFazendo('Treinando')}
-          >Treinando</button>
+          <p className='titulo'>O que você está fazendo nesse momento?</p>
+          <div className='botoesFazendo'>
+            <div className="botoesLinha1">
+              <button 
+                className={selectedButtonFazendo === 'Estudando' ? 'selected' : ''} 
+                onClick={() => handleButtonClickFazendo('Estudando')}
+              >Estudando</button>
+              <button 
+                className={selectedButtonFazendo === 'Trabalhando' ? 'selected' : ''} 
+                onClick={() => handleButtonClickFazendo('Trabalhando')}
+              >Trabalhando</button>
+              <button 
+                className={selectedButtonFazendo === 'Dirigindo' ? 'selected' : ''} 
+                onClick={() => handleButtonClickFazendo('Dirigindo')}
+              >Dirigindo</button>
+
+            </div>
+
+            <div className='botoesLinha2'>
+            <button 
+                className={selectedButtonFazendo === 'Comendo' ? 'selected' : ''} 
+                onClick={() => handleButtonClickFazendo('Comendo')}
+              >Comendo</button>
+              <button 
+                className={selectedButtonFazendo === 'Relaxando' ? 'selected' : ''} 
+                onClick={() => handleButtonClickFazendo('Relaxando')}
+              >Relaxando</button> 
+              <button 
+                className={selectedButtonFazendo === 'Treinando' ? 'selected' : ''} 
+                onClick={() => handleButtonClickFazendo('Treinando')}
+              >Treinando</button>
+            </div>  
+          </div>  
         </div>
       </div>
 
-      <div className='dupla2'>
-        <div className='optionsMatch'>
-          <div className="matchClash">
-            <p  className='titulo' >Uma playlist que?</p>
-            <button 
-              className={selectedButtonMatchClash === 'Match' ? 'selected' : ''} 
-              onClick={() => handleButtonClickMatchClash('Match')}
-              >Match
-            </button>
-            <button 
-              className={selectedButtonMatchClash === 'Clash' ? 'selected' : ''} 
-              onClick={() => handleButtonClickMatchClash('Clash')}
-              >Clash
-            </button>
-          </div>
-        
-          <div className="loginSpotify">
-            {!FezLogin && 
-              (
-                <a href="https://accounts.spotify.com/authorize?client_id=4935730c846c489fbcfffdfbae4b19e4&response_type=code&redirect_uri=https://localhost:7133/api/SpotifyCallback/callback&scope=playlist-modify-public"
-                target="_blank" ><button onClick={handleButtonClickLogin}>Login Spotify</button></a>
-              )
-            }
-          </div>
-          
-          <div className="playlistButton">
-            {FezLogin && !Carregando && !RespostaBackend && 
-            Resposta1 && Resposta2 && Resposta3 &&  
-            Resposta4 && Resposta5 &&
-              (
-                <button onClick={handleSubmit}>{ExistPlaylist}</button>
-              ) 
-            }
-          </div>
+      <div className="loginSpotify">
+        {!FezLogin && 
+          (
+            <a href="https://accounts.spotify.com/authorize?client_id=4935730c846c489fbcfffdfbae4b19e4&response_type=code&redirect_uri=https://localhost:7133/api/SpotifyCallback/callback&scope=playlist-modify-public"
+            target="_blank" ><button onClick={handleButtonClickLogin}>Login Spotify</button></a>
+          )
+        }
+      </div>
+      
+      <div className="criarPlaylist">
+        {FezLogin && !Carregando && !RespostaBackend && 
+        Resposta1 && Resposta2 && Resposta3 &&  
+        Resposta4 && Resposta5 &&
+          (
+            <button onClick={handleSubmit}>Aqui</button>
+          ) 
+        }
+      </div>
 
-          <div>
-            {Carregando &&
-              (
-                <p>Carregando...</p>
-              ) 
-            }
-          </div>
-        </div>
+      <div className='carregando'>
+        {Carregando &&
+          (
+            <p>Carregando...</p>
+          ) 
+        }
+      </div>
 
-        <div className='miniplaylist'>
-          {RespostaBackend && !Carregando &&
-            ( 
-              <div >
-                
-                  <a className='titulo' href={LinkPlaylist} target="_blank" rel="noopener noreferrer">
-                    Abrir no Spotify
-                  </a>
-               
-                  <div>
-                  <iframe 
-                    src={LinkPlaylistPrevia}
-                    frameBorder="0" 
-                    allowfullscreen="" 
-                    allow="autoplay; clipboard-write;  fullscreen; picture-in-picture" 
-                    loading="lazy"
-                    height="180"
-                    >  
-
-                  </iframe> 
-
-                </div>
+      <div className='miniplaylist'>
+        {RespostaBackend && !Carregando &&
+          ( 
+            <div > 
+              <a className='titulo' 
+                 href={LinkPlaylist} 
+                 target="_blank" 
+                 rel="noopener noreferrer">
+                 Abrir no Spotify
+              </a>
+            
+              <div>
+                <iframe 
+                  src={LinkPlaylistPrevia}
+                  frameBorder="0" 
+                  allowfullscreen="" 
+                  allow="autoplay; clipboard-write;  fullscreen; picture-in-picture" 
+                  loading="lazy"
+                  height="180">  
+                </iframe> 
               </div>
-            )
-          } 
-        </div>
+
+            </div>
+          )
+        } 
       </div>
-      <div className="playlistButton1">
+      <div className='naoGostei'>
         {FezLogin && !Carregando && RespostaBackend &&
           (
             <button onClick={handleSubmit}>{ExistPlaylist}</button>
@@ -173,5 +187,4 @@ function Principal() {
     </div>
   );
 }
-
 export default Principal;
