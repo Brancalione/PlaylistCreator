@@ -36,7 +36,7 @@ namespace ServiceWeb.Services
             }
             else
             {
-                throw new Exception($"Error: {response.StatusCode}");
+                return null;
             }
         }
     }

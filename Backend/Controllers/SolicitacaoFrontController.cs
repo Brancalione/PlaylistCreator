@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
 using ServiceWeb.Models;
 using ServiceWeb.Services;
 using System.Text.Json;
@@ -28,24 +29,15 @@ namespace ServiceWeb.Controllers
         public async Task<IActionResult> ProcessaFront([FromBody] FormFrontModel respostasForm)
         {
             string idPlaylist;
+            string musicas;
             string[] nomeMusicas = new string[9];
+            TextSeparator separator = new TextSeparator();
             BuscaIdMusicas buscaIdMusic = new BuscaIdMusicas();
+            //RequestGemini requestGeminService = new RequestGemini();
             SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist();
             spotifyUrlPlaylist urlPlaylist = new spotifyUrlPlaylist();
             InsertMusicPlaylist insertMusicPlaylist = new InsertMusicPlaylist();
             RequestChatGptService requestChatGptService = new RequestChatGptService();
-
-            //await requestChatGptService.RequestChatAsync("Tteste");
-
-            nomeMusicas[0] = "Me dê motivo - Tim Maia";
-            nomeMusicas[1] = "Levitating - Dua Lipa";
-            nomeMusicas[2] = "Shape of You - Ed Sheeran";
-            nomeMusicas[3] = "Drivers License - Olivia Rodrigo";
-            nomeMusicas[4] = "Bad Guy - Billie Eilish";
-            nomeMusicas[5] = "Peaches - Justin Bieber";
-            nomeMusicas[6] = "Watermelon Sugar - Harry Styles";
-            nomeMusicas[7] = "Stay - The Kid LAROI & Justin Bieber";
-            nomeMusicas[8] = "Good 4 U - Olivia Rodrigo";
 
             // Preenche a variável spotifyToken360 com o token
             GetSpotifyToken();
@@ -57,16 +49,35 @@ namespace ServiceWeb.Controllers
 
             try
             {
+                
+                var textoReponse = await requestChatGptService.RequestChatAsync(respostasForm.Resposta1,
+                                                                                respostasForm.Resposta2,
+                                                                                respostasForm.Resposta3,
+                                                                                respostasForm.Resposta4,
+                                                                                respostasForm.Resposta5);
+                musicas = textoReponse.Choices[0].Message.Content;
+                nomeMusicas = await separator.SeparateTextAsync(musicas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Erro ao criar playlist: {ex.Message}");
+            }
+
+            try
+            {
                 // Cria playlist
                 var playlistResponse = await spotifyPlaylist.CreatePlaylistAsync(spotifyToken360);
                 idPlaylist = playlistResponse.id;
                 urlPlaylist = playlistResponse.external_urls;
 
                 // Busca e insere música na playlist
-                for (int i = 0; i < nomeMusicas.Length; i++)
+                for (int i = 0; i < 9; i++)
                 {
                     string uriMusic = await buscaIdMusic.GetIdMusicAsync(nomeMusicas[i], spotifyToken360);
-                    await insertMusicPlaylist.InserirMusicPlaylistAsync(uriMusic, spotifyToken360, i, idPlaylist);
+                    if (uriMusic != null){
+                        await Task.Delay(300);
+                        await insertMusicPlaylist.InserirMusicPlaylistAsync(uriMusic, spotifyToken360, i, idPlaylist);
+                    }
                 }
             }
             catch (Exception ex)

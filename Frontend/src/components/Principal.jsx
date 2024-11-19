@@ -76,9 +76,9 @@ function Principal() {
               >Match
             </button>
             <button 
-              className={selectedButtonMatchClash === 'Clash' ? 'selected' : ''} 
-              onClick={() => handleButtonClickMatchClash('Clash')}
-              >Clash
+              className={selectedButtonMatchClash === 'Unmatch' ? 'selected' : ''} 
+              onClick={() => handleButtonClickMatchClash('Unmatch')}
+              >Unmatch
             </button>
           </div>  
         </div>

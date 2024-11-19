@@ -13,10 +13,17 @@ namespace ServiceWeb.Services
             _client = new HttpClient();
         }
 
-        public async Task RequestChatAsync(string texto)
+        public async Task<ResponseChatGptModel> RequestChatAsync(int feliz, 
+                                           int entusi, 
+                                           int relax, 
+                                           string fazendo, 
+                                           string match)
         {
 
-            texto = "teste, oi";
+            string texto = $"Por favor, indique 9 músicas que {match} com o que estou sentindo no momento. Estou me sentindo " +
+                                $"{feliz}% feliz, {entusi}% entusiasmado e {relax}% relaxado. Além disso, considere que estou {fazendo}." +
+                                $" Retorne apenas o nome da música e o artista, sem adicionar outros textos ou informações ou contra-barras.";
+             
             string token = "";
 
             string url = "https://api.openai.com/v1/chat/completions";
@@ -47,7 +54,8 @@ namespace ServiceWeb.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return;
+                    var jsonResponse = await response.Content.ReadAsStringAsync();
+                    return JsonConvert.DeserializeObject<ResponseChatGptModel>(jsonResponse);
                 }
                 else
                 {
