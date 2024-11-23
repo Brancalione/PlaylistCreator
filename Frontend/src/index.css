@@ -103,7 +103,10 @@ body::-webkit-scrollbar {
   font-size: 16px;
   padding-bottom: 3%;
 }
-
+.carregando{
+  font-size: 25px;
+  text-align: center;
+}
 .criarPlaylist , .loginSpotify{
   display: flex;
   justify-content: center;}

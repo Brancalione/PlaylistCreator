@@ -22,16 +22,16 @@ namespace ServiceWeb.Services
 
             if (match == "Match")
             {
-                match = "combinem";
+                match = "combinem com minhas emoções";
             }
             else
             {
-                match = "me ajudem a mudar ou inverter minhas emoções";
+                match = "me ajudem a inverter minhas emoções de feliz, entusiasmado e relaxado ";
             }
 
-            string texto = $"Por favor, indique 9 músicas que {match} com base no que estou sentindo no momento. Estou me sentindo " +
+            string texto = $"Por favor, indique 9 músicas que {match} com base nas porcentagem informadas. Estou me sentindo " +
                                 $"{feliz}% feliz, {entusi}% entusiasmado e {relax}% relaxado. Além disso, considere que estou {fazendo}." +
-                                $" Retorne apenas o nome da música e o artista, sem adicionar outros textos ou informações ou contra-barras.";
+                                $" Retorne apenas o nome da música e o artista, sem adicionar outros textos ou informações ou contra-barras. Dê preferencia músicas não muito populares";
 
             string token = "";
 
@@ -48,7 +48,7 @@ namespace ServiceWeb.Services
                         content = texto
                     }
                 },
-                temperature = 0.8
+                temperature = 0.1
             };
 
             var jsonBody = JsonConvert.SerializeObject(bodyRequest);
