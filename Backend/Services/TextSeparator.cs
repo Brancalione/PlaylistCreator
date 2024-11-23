@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ServiceWeb.Services
@@ -9,22 +10,12 @@ namespace ServiceWeb.Services
         {
             return await Task.Run(() =>
             {
-                string input = inputText;
+                // Regex para remover o número seguido de ponto e espaço no início de cada linha
+                string pattern = @"^\d+\.\s*";
+                string result = Regex.Replace(inputText, pattern, "", RegexOptions.Multiline);
+                string[] lines = result.Split(new[] { '\n' }, StringSplitOptions.TrimEntries);
 
-                // Separar o texto em linhas
-                string[] lines = input.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-                // Array fixo de tamanho 9
-                string[] musicArray = new string[9];
-
-                // Preencher o array com as músicas
-                for (int i = 0; i < lines.Length && i < musicArray.Length; i++)
-                {
-                    // Remover os números e espaços extras no início de cada linha
-                    musicArray[i] = lines[i].Substring(lines[i].IndexOf(".") + 2).Trim();
-                }
-
-                return musicArray;
+                return lines;
             });
         }
     }

@@ -74,8 +74,8 @@ namespace ServiceWeb.Controllers
                 for (int i = 0; i < 9; i++)
                 {
                     string uriMusic = await buscaIdMusic.GetIdMusicAsync(nomeMusicas[i], spotifyToken360);
-                    if (uriMusic != null){
-                        await Task.Delay(300);
+                    if (uriMusic != ""){
+                        //await Task.Delay(300);
                         await insertMusicPlaylist.InserirMusicPlaylistAsync(uriMusic, spotifyToken360, i, idPlaylist);
                     }
                 }

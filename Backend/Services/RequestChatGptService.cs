@@ -20,16 +20,26 @@ namespace ServiceWeb.Services
                                            string match)
         {
 
-            string texto = $"Por favor, indique 9 músicas que {match} com o que estou sentindo no momento. Estou me sentindo " +
+            if (match == "Match")
+            {
+                match = "combinem";
+            }
+            else
+            {
+                match = "me ajudem a mudar ou inverter minhas emoções";
+            }
+
+            string texto = $"Por favor, indique 9 músicas que {match} com base no que estou sentindo no momento. Estou me sentindo " +
                                 $"{feliz}% feliz, {entusi}% entusiasmado e {relax}% relaxado. Além disso, considere que estou {fazendo}." +
                                 $" Retorne apenas o nome da música e o artista, sem adicionar outros textos ou informações ou contra-barras.";
-             
+
             string token = "";
+
 
             string url = "https://api.openai.com/v1/chat/completions";
             BodyChatGptModel bodyRequest = new BodyChatGptModel
             {
-                model = "gpt-4o-mini",
+                model = "gpt-4o",
                 messages = new[]
                 {
                     new ObjetoMessagens
