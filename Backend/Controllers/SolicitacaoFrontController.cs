@@ -11,11 +11,13 @@ namespace ServiceWeb.Controllers
     public class SolicitacaoFrontController : ControllerBase
     {
         private readonly ISharedDataService _sharedDataService;
+        private readonly IConfiguration _configurationGpt;
         private string spotifyToken360;
 
-        public SolicitacaoFrontController(ISharedDataService sharedDataService)
+        public SolicitacaoFrontController(ISharedDataService sharedDataService, IConfiguration configurationGpt)
         {
             _sharedDataService = sharedDataService;
+            _configurationGpt = configurationGpt;
         }
 
         // Método privado para obter o token sem retorno
@@ -48,12 +50,13 @@ namespace ServiceWeb.Controllers
 
             try
             {
-                
+                string apiKeyGpt = _configurationGpt["ApiKeys:apiKeyGpt"];
                 var textoReponse = await requestChatGptService.RequestChatAsync(respostasForm.Resposta1,
                                                                                 respostasForm.Resposta2,
                                                                                 respostasForm.Resposta3,
                                                                                 respostasForm.Resposta4,
-                                                                                respostasForm.Resposta5);
+                                                                                respostasForm.Resposta5,
+                                                                                apiKeyGpt);
                 musicas = textoReponse.Choices[0].Message.Content;
                 nomeMusicas = await separator.SeparateTextAsync(musicas);
             }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using ServiceWeb.Models;
 using System.Net.Http.Headers;
 
@@ -7,18 +8,22 @@ namespace ServiceWeb.Services
     public class RequestChatGptService
     {
         private readonly HttpClient _client;
+        private readonly IConfiguration _configurationGpt;
+
 
         public RequestChatGptService() 
         {
             _client = new HttpClient();
+          
         }
 
         public async Task<ResponseChatGptModel> RequestChatAsync(int feliz, 
-                                           int entusi, 
-                                           int relax, 
-                                           string fazendo, 
-                                           string match)
-        {
+                                                                 int entusi, 
+                                                                 int relax, 
+                                                                 string fazendo, 
+                                                                 string match,
+                                                                 string token)
+        {  
 
             if (match == "Match")
             {
@@ -32,9 +37,6 @@ namespace ServiceWeb.Services
             string texto = $"Por favor, indique 9 músicas que {match} com base nas porcentagem informadas. Estou me sentindo " +
                                 $"{feliz}% feliz, {entusi}% entusiasmado e {relax}% relaxado. Além disso, considere que estou {fazendo}." +
                                 $" Retorne apenas o nome da música e o artista, sem adicionar outros textos ou informações ou contra-barras. Dê preferencia músicas não muito populares";
-
-            string token = "";
-
 
             string url = "https://api.openai.com/v1/chat/completions";
             BodyChatGptModel bodyRequest = new BodyChatGptModel
