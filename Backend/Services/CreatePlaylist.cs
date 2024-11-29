@@ -17,14 +17,14 @@ namespace ServiceWeb.Services
             _client = new HttpClient();
         }
 
-        public async Task<ResonseCreatePlaylistModel> CreatePlaylistAsync(string token)
+        public async Task<ResonseCreatePlaylistModel> CreatePlaylistAsync(string token, string fazendo)
         {
             string url = "https://api.spotify.com/v1/users/jeova-brancalione/playlists";
 
             // Criação do corpo da requisição JSON
             var bodyRequest = new
             {
-                name = "Playlist API",
+                name = $"Músicas para ouvir {fazendo}",
                 description = "New playlist description",
                 @public = true
             };

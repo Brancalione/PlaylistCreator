@@ -62,9 +62,9 @@ return (
   <div className="container">
     {RespostaBackend && !Carregando && PlaylistCarregada   ? 
     (
-      <div>
+      <div className='SegundaTela'>
         <div className="miniplaylist">
-          <a className="titulo" href={LinkPlaylist} target="_blank" rel="noopener noreferrer">
+          <a className="titulo2" href={LinkPlaylist} target="_blank" rel="noopener noreferrer">
             Abrir no Spotify
           </a>
           <div>
@@ -88,7 +88,7 @@ return (
     ) : (
       <div>
         <div className="LogoEmacht">
-          <img className="logo" src="src/img/Spotify_Primary_Logo_RGB_Green.png" alt="logoSpotify" />
+          <img className="logo" src="src/img/logo.png" alt="logoSpotify" />
           <div className="descricaoApp">
             <p className="titulo2">Expresse o que está sentindo e veja</p>
             <p className="titulo3">a playlist que criamos para você!</p>

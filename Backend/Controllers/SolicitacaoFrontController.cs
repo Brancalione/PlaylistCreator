@@ -33,7 +33,6 @@ namespace ServiceWeb.Controllers
             string[] nomeMusicas = new string[9];
             TextSeparator separator = new TextSeparator();
             BuscaIdMusicas buscaIdMusic = new BuscaIdMusicas();
-            //RequestGemini requestGeminService = new RequestGemini();
             SpotifyPlaylist spotifyPlaylist = new SpotifyPlaylist();
             spotifyUrlPlaylist urlPlaylist = new spotifyUrlPlaylist();
             InsertMusicPlaylist insertMusicPlaylist = new InsertMusicPlaylist();
@@ -66,7 +65,7 @@ namespace ServiceWeb.Controllers
             try
             {
                 // Cria playlist
-                var playlistResponse = await spotifyPlaylist.CreatePlaylistAsync(spotifyToken360);
+                var playlistResponse = await spotifyPlaylist.CreatePlaylistAsync(spotifyToken360, respostasForm.Resposta4);
                 idPlaylist = playlistResponse.id;
                 urlPlaylist = playlistResponse.external_urls;
 
@@ -75,7 +74,6 @@ namespace ServiceWeb.Controllers
                 {
                     string uriMusic = await buscaIdMusic.GetIdMusicAsync(nomeMusicas[i], spotifyToken360);
                     if (uriMusic != ""){
-                        //await Task.Delay(300);
                         await insertMusicPlaylist.InserirMusicPlaylistAsync(uriMusic, spotifyToken360, i, idPlaylist);
                     }
                 }
