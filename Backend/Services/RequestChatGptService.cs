@@ -23,20 +23,20 @@ namespace ServiceWeb.Services
                                                                  string fazendo, 
                                                                  string match,
                                                                  string token)
-        {  
+        {
 
-            if (match == "Match")
+            //inverter porcentagem sentimento
+            if (match != "Match")
             {
-                match = "combinem com minhas emoções";
+                feliz = 100 - feliz;
+                entusi = 100 - entusi;
+                relax = 100 - relax;
             }
-            else
-            {
-                match = "me ajudem a inverter minhas emoções de feliz, entusiasmado e relaxado ";
-            }
+        
 
-            string texto = $"Por favor, indique 9 músicas que {match} com base nas porcentagem informadas. Estou me sentindo " +
+            string texto = $"Por favor, indique 9 músicas que combinem com minhas emoções com base nas porcentagem informadas. Estou me sentindo " +
                                 $"{feliz}% feliz, {entusi}% entusiasmado e {relax}% relaxado. Além disso, considere que estou {fazendo}." +
-                                $" Retorne apenas o nome da música e o artista, sem adicionar outros textos ou informações ou contra-barras. Dê preferencia músicas não muito populares";
+                                $" Retorne apenas o nome da música e o artista, sem adicionar outros textos ou informações ou contra-barras. Dê preferencia músicas você normalmente não recomendaria";
 
             string url = "https://api.openai.com/v1/chat/completions";
             BodyChatGptModel bodyRequest = new BodyChatGptModel
